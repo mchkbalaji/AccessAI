@@ -83,7 +83,7 @@ Ensure that each JSON chunk contains the above json properties to fix the specif
   return query;
 }
 
-app.get("/scrape", async (req, res) => {
+app.post("/scrape", async (req, res) => {
   const url = req.body.url;
   const results = await pa11y(url);
 
