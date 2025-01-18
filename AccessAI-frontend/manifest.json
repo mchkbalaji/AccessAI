@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "AccessAI",
+  "version": "1.1",
+  "description": "Analyze and improve the accessibility and screen reader compatibility of any webpage using AI.",
+  "permissions": ["tabs","activeTab", "scripting", "storage"],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+        "128":"icons/icon-png.png"
+    }
+  },
+  "icons": {
+    "128": "icons/icon-png.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
