@@ -1,9 +1,11 @@
 import express from "express";
 import pa11y from "pa11y";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const app = new express();
-const genAI = new GoogleGenerativeAI("AIzaSyDteCLr8VTaultT66oJdOTy1Zl2duTZEg4");
+const genAI = new GoogleGenerativeAI(`${process.env.GOOGLE_API_KEY}`);
 
 app.use(express.json());
 
