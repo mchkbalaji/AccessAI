@@ -69,12 +69,16 @@ function writeQuery(pallyResults) {
   const query =
     `You are given a list of accessibility issues in HTML. For each issue:
 
-Fix the problems and return a separate JSON chunk in the following format, where the "correctedCode" should be JavaScript that will perform the correction when executed:
+Fix the problems and return a separate JSON chunk in the following format:
 {
     "title": "A small title for describing the problem",
-    "correctedCode": "<JavaScript_Code_To_Fix>"
+    "selector": "the string which i should pass to document.querySelector() to select the element",
+    "setAttributes": {
+        "attributeName": "value" (these are the attributes which you need to set)
+    },
+    "innerhtml": "if you want to change the innerhtml else just return empty string"
 }
-Ensure that each JSON chunk contains the JavaScript code needed to fix the specific issue.` +
+Ensure that each JSON chunk contains the above json properties to fix the specific issue.` +
     JSON.stringify(pallyResults);
   return query;
 }
@@ -89,6 +93,6 @@ app.get("/scrape", async (req, res) => {
   return res.json(llmResults);
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(8080, () => {
+  console.log("Server is running on port 8080");
 });
