@@ -1,7 +1,6 @@
 import express from "express";
 import pa11y from "pa11y";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import fs from "fs";
 
 const app = new express();
 const genAI = new GoogleGenerativeAI("AIzaSyDteCLr8VTaultT66oJdOTy1Zl2duTZEg4");
@@ -68,15 +67,9 @@ function writeQuery(pallyResults) {
   const query =
     `You are given a list of accessibility issues in HTML. For each issue:
 
-Replace obsolete markup (e.g., <center>) with modern alternatives (e.g., CSS styles).
-Remove deprecated align attributes and use CSS (e.g., text-align).
-Correct semantic HTML issues (e.g., remove role="presentation" if it contains semantic content).
-For each issue, return a separate JSON chunk in the following format, where the "correctedCode" should be JavaScript that will perform the correction when executed:
+Fix the problems and return a separate JSON chunk in the following format, where the "correctedCode" should be JavaScript that will perform the correction when executed:
 {
-    "code": "<Error_Code>",
-    "type": "<Error_Type>",
-    "message": "<Error_Message>",
-    "context": "<Problematic_HTML_Code>",
+    "title": "A small title for describing the problem",
     "correctedCode": "<JavaScript_Code_To_Fix>"
 }
 Ensure that each JSON chunk contains the JavaScript code needed to fix the specific issue.` +
