@@ -92,7 +92,7 @@ async function getAlt(imageUrl) {
         mimeType: "image/jpeg",
       },
     },
-    "Just provide a short alt text for the image and no extra words.",
+    "Just provide a short alt text for the image and no extra words and end of line characters.",
   ]);
 
   return result.response.text();
@@ -114,7 +114,7 @@ app.post("/scrape", async (req, res) => {
           // Get alt text suggestion
           const altText = await getAlt(imageUrl);
           // Modify message to include suggested alt
-          result.message = `${result.message} Suggested alt text: "${altText}"`;
+          result.message = `${result.message} Suggested alt text: ${altText}`;
         } catch (error) {
           console.error("Error getting alt text:", error);
         }
