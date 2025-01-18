@@ -1,0 +1,34 @@
+[
+  {
+    "code": "WCAG2AA.Principle1.Guideline1_3.1_3_1.H49.Center",
+    "type": "error",
+    "typeCode": 1,
+    "message": "Presentational markup used that has become obsolete in HTML5.",
+    "context": "<center><br clear=\"all\" id=\"lgpd\"><div ...</center>",
+    "correctedCode": "\n function fixCenterTag(element) {\n const centerElement = element.querySelector('center');\n if (centerElement) {\n const div = document.createElement('div');\n div.style.textAlign = 'center';\n while (centerElement.firstChild) {\n div.appendChild(centerElement.firstChild);\n }\n centerElement.parentNode.replaceChild(div, centerElement);\n }\n }\n \n const body = document.querySelector('body');\n fixCenterTag(body)\n "
+  },
+  {
+    "code": "WCAG2AA.Principle1.Guideline1_3.1_3_1.H49.AlignAttr",
+    "type": "error",
+    "typeCode": 1,
+    "message": "Align attributes .",
+    "context": "<td align=\"center\" nowrap=\"\"><input name=\"ie\" value=\"ISO-885...</td>",
+    "correctedCode": "\n function fixAlignAttribute(element) {\n const tdElements = element.querySelectorAll('td[align]');\n tdElements.forEach(td => {\n const align = td.getAttribute('align');\n td.style.textAlign = align;\n td.removeAttribute('align');\n if (td.hasAttribute('nowrap')) {\n td.style.whiteSpace = 'nowrap';\n td.removeAttribute('nowrap');\n }\n });\n }\n \n const body = document.querySelector('body');\n fixAlignAttribute(body);\n "
+  },
+  {
+    "code": "WCAG2AA.Principle1.Guideline1_3.1_3_1.H49.AlignAttr",
+    "type": "error",
+    "typeCode": 1,
+    "message": "Align attributes .",
+    "context": "<td class=\"fl sblc\" align=\"left\" nowrap=\"\" width=\"25%\"><a href=\"/advanced_search?hl=en...</td>",
+    "correctedCode": "\n function fixAlignAttribute(element) {\n const tdElements = element.querySelectorAll('td[align]');\n tdElements.forEach(td => {\n const align = td.getAttribute('align');\n td.style.textAlign = align;\n td.removeAttribute('align');\n if (td.hasAttribute('nowrap')) {\n td.style.whiteSpace = 'nowrap';\n td.removeAttribute('nowrap');\n }\n });\n }\n const body = document.querySelector('body');\n fixAlignAttribute(body);\n "
+  },
+  {
+    "code": "WCAG2AA.Principle1.Guideline1_3.1_3_1.F92,ARIA4",
+    "type": "error",
+    "typeCode": 1,
+    "message": "This element's role is \"presentation\" but contains child elements with semantic meaning.",
+    "context": "<table cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" class=\"gstl_0 gssb_c\" style=\"width: 514px; display: none; top: 236px; left: 383px; position: absolute;\"><tbody><tr><td class=\"gssb_f\"><...</table>",
+    "correctedCode": "\n function removePresentationRole(element) {\n const tableElements = element.querySelectorAll('table[role=\"presentation\"]');\n tableElements.forEach(table => {\n if (table.querySelectorAll('*').length > 0) { // Check if it contains any child element.\n table.removeAttribute('role');\n }\n });\n }\n\n const body = document.querySelector('body');\n removePresentationRole(body);\n "
+  }
+]

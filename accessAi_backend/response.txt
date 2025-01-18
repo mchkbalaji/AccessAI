@@ -1,0 +1,101 @@
+```json
+{
+  "code": "WCAG2AA.Principle1.Guideline1_3.1_3_1.H49.Center",
+  "type": "error",
+  "typeCode": 1,
+  "message": "Presentational markup used that has become obsolete in HTML5.",
+  "context": "<center><br clear=\"all\" id=\"lgpd\"><div ...</center>",
+  "correctedCode": `
+    function fixCenterTag(element) {
+      const centerElement = element.querySelector('center');
+      if (centerElement) {
+        const div = document.createElement('div');
+        div.style.textAlign = 'center';
+        while (centerElement.firstChild) {
+          div.appendChild(centerElement.firstChild);
+        }
+        centerElement.parentNode.replaceChild(div, centerElement);
+      }
+    }
+    
+    const body = document.querySelector('body');
+    fixCenterTag(body)
+  `
+}
+```
+
+```json
+{
+  "code": "WCAG2AA.Principle1.Guideline1_3.1_3_1.H49.AlignAttr",
+  "type": "error",
+  "typeCode": 1,
+  "message": "Align attributes .",
+  "context": "<td align=\"center\" nowrap=\"\"><input name=\"ie\" value=\"ISO-885...</td>",
+  "correctedCode": `
+    function fixAlignAttribute(element) {
+      const tdElements = element.querySelectorAll('td[align]');
+      tdElements.forEach(td => {
+        const align = td.getAttribute('align');
+        td.style.textAlign = align;
+        td.removeAttribute('align');
+        if (td.hasAttribute('nowrap')) {
+          td.style.whiteSpace = 'nowrap';
+          td.removeAttribute('nowrap');
+        }
+      });
+    }
+    
+    const body = document.querySelector('body');
+    fixAlignAttribute(body);
+  `
+}
+```
+
+```json
+{
+  "code": "WCAG2AA.Principle1.Guideline1_3.1_3_1.H49.AlignAttr",
+  "type": "error",
+  "typeCode": 1,
+  "message": "Align attributes .",
+  "context": "<td class=\"fl sblc\" align=\"left\" nowrap=\"\" width=\"25%\"><a href=\"/advanced_search?hl=en...</td>",
+  "correctedCode": `
+    function fixAlignAttribute(element) {
+      const tdElements = element.querySelectorAll('td[align]');
+      tdElements.forEach(td => {
+        const align = td.getAttribute('align');
+        td.style.textAlign = align;
+        td.removeAttribute('align');
+        if (td.hasAttribute('nowrap')) {
+          td.style.whiteSpace = 'nowrap';
+          td.removeAttribute('nowrap');
+        }
+      });
+    }
+    const body = document.querySelector('body');
+    fixAlignAttribute(body);
+  `
+}
+```
+
+```json
+{
+  "code": "WCAG2AA.Principle1.Guideline1_3.1_3_1.F92,ARIA4",
+  "type": "error",
+  "typeCode": 1,
+  "message": "This element's role is \"presentation\" but contains child elements with semantic meaning.",
+  "context": "<table cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" class=\"gstl_0 gssb_c\" style=\"width: 514px; display: none; top: 236px; left: 383px; position: absolute;\"><tbody><tr><td class=\"gssb_f\"><...</table>",
+  "correctedCode": `
+    function removePresentationRole(element) {
+      const tableElements = element.querySelectorAll('table[role="presentation"]');
+      tableElements.forEach(table => {
+        if (table.querySelectorAll('*').length > 0) { // Check if it contains any child element.
+          table.removeAttribute('role');
+        }
+      });
+    }
+
+    const body = document.querySelector('body');
+    removePresentationRole(body);
+  `
+}
+```
