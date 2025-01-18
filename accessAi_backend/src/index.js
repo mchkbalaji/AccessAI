@@ -1,11 +1,12 @@
 import express from "express";
 import pa11y from "pa11y";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 dotenv.config();
 
 const app = new express();
 const genAI = new GoogleGenerativeAI(`${process.env.GOOGLE_API_KEY}`);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 app.use(express.json());
 
@@ -56,9 +57,7 @@ function parseJsonChunks(fileContent) {
   }
 }
 
-
 const getLlmResponse = async (data) => {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const result = await model.generateContent(data);
   const response = await result.response;
   const text = response.text();
@@ -83,14 +82,57 @@ Ensure that each JSON chunk contains the above json properties to fix the specif
   return query;
 }
 
+async function getAlt(imageUrl) {
+  const imageResp = await fetch(imageUrl).then((res) => res.arrayBuffer());
+
+  const result = await model.generateContent([
+    {
+      inlineData: {
+        data: Buffer.from(imageResp).toString("base64"),
+        mimeType: "image/jpeg",
+      },
+    },
+    "Just provide a short alt text for the image and no extra words.",
+  ]);
+
+  return result.response.text();
+}
+
+
+
 app.post("/scrape", async (req, res) => {
   const url = req.body.url;
-  const results = await pa11y(url);
+  let results = await pa11y(url);
+
+  for (let result of results.issues) {
+    if (result.code === "WCAG2AA.Principle1.Guideline1_1.1_1_1.H37") {
+      // Extract image URL from context
+      const imgMatch = result.context.match(/src="([^"]+)"/);
+      if (imgMatch && imgMatch[1]) {
+        const imageUrl = imgMatch[1];
+        try {
+          // Get alt text suggestion
+          const altText = await getAlt(imageUrl);
+          // Modify message to include suggested alt
+          result.message = `${result.message} Suggested alt text: "${altText}"`;
+        } catch (error) {
+          console.error("Error getting alt text:", error);
+        }
+      }
+    }
+  }
 
   const query = writeQuery(results);
   const llmResults = await getLlmResponse(query);
 
   return res.json(llmResults);
+});
+
+app.post("/generateAlt", async (req, res) => {
+  const imageUrl = req.body.imageUrl;
+  const alt = await getAlt(imageUrl);
+
+  return res.json({ alt });
 });
 
 app.listen(8080, () => {
