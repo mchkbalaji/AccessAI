@@ -41,4 +41,4 @@ To run AccesAI locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/accesai.git
+   git clone https://github.com/mchkbalaji/AccessAI.git      
