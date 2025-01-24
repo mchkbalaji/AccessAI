@@ -38,6 +38,14 @@
     top: 21px;
     left: 20px;
   }
+
+
+  .big-center-icon{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    /* background-color:aqua; */
+  }
   
   .frame .overlap-group {
     position: relative;
@@ -76,25 +84,13 @@
     left: -3px;
   }
   
-  .frame .ellipse {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    top: 16px;
-    left: 17px;
-    background-color: #000000;
-    border-radius: 3.02px;
-  }
-  
-  .frame .ellipse-2 {
-    position: absolute;
-    width: 21px;
-    height: 21px;
-    top: 8px;
+  .logo-icon{
+    position: relative;
+    width: 30px;
+    height: 30px;
+    top: 3px;
     left: 10px;
-    border-radius: 10.74px;
-    border: 5px solid;
-    border-color: #000000;
+    /* background-color:aqua; */
   }
   
   .frame .vector {
